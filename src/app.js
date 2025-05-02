@@ -1,11 +1,15 @@
 import express from 'express'
 import { resolve } from 'node:path'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import cors from 'cors'
 import routes from './routes'
 import './database'
 
 class App {
   constructor() {
     this.app = express()
+
+    this.app.use(cors())
 
     this.middlewares()
     this.routes()
