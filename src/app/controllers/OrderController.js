@@ -6,11 +6,11 @@ import User from '../models/User'
 
 class OrderController {
   async store(request, response) {
-    const schema = Yup.object({
+    const schema = Yup.object().shape({
       products: Yup.array()
         .required()
         .of(
-          Yup.object({
+          Yup.object().shape({
             id: Yup.number().required(),
             quantity: Yup.number().required(),
           }),
@@ -46,7 +46,7 @@ class OrderController {
       const newProduct = {
         id: product.id,
         name: product.name,
-        cstegory: product.category.name,
+        category: product.category.name,
         price: product.price,
         url: product.url,
         quantity: products[productIndex].quantity,
