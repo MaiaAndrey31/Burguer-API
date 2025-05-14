@@ -60,7 +60,7 @@ class OrderController {
         name: request.userName,
       },
       products: formatedProducts,
-      status: 'Pedido realizado 😃',
+      status: 'Pedido realizado com sucesso! 😃',
     }
 
     const createdOrder = await Order.create(order)
