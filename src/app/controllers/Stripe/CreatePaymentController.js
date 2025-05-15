@@ -49,7 +49,7 @@ class CreatePaymentIntentController {
 
     res.json({
       clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
+      dpmCheckerLink: `https://dashboard.stripe.com/settings/payment_methods/review?transaction_id=${paymentIntent.id}`,
     })
   }
 }
