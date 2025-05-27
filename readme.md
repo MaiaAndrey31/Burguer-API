@@ -1,87 +1,177 @@
-# Burguer-API
+# 🍔 Burguer-API
 
-Uma API RESTful para gerenciar burgers, usuários, produtos, categorias e pedidos.
+Uma API RESTful completa para gerenciamento de um sistema de delivery de hambúrgueres, com autenticação, upload de imagens, gerenciamento de produtos, categorias, pedidos e integração com Stripe para pagamentos.
 
-## Sumário
+## 🚀 Tecnologias
 
-* [Começando](#começando)
-* [Pré-requisitos](#pré-requisitos)
-* [Instalação](#instalação)
-* [Uso](#uso)
-* [Autenticação](#autenticação)
-* [Pontos de Extremidade da API](#pontos-de-extremidade-da-api)
-* [Modelos](#modelos)
-* [Banco de Dados](#banco-de-dados)
-* [Contribuindo](#contribuindo)
-* [Licença](#licença)
+- Node.js
+- Express
+- Sequelize (ORM para PostgreSQL)
+- JWT (Autenticação)
+- Multer (Upload de arquivos)
+- Stripe (Pagamentos)
+- Bcrypt (Criptografia de senhas)
+- Yup (Validação de dados)
+- ESLint + Prettier (Padronização de código)
+- Sucrase (Permite usar import/export)
 
-## Começando
+## 📋 Pré-requisitos
 
-Essa API é construída usando Node.js, Express.js e Sequelize. Ela fornece uma maneira simples de gerenciar burgers, usuários, produtos, categorias e pedidos.
+- Node.js (v14 ou superior)
+- Yarn ou NPM
+- PostgreSQL (v13 ou superior)
+- Conta no Stripe (para pagamentos)
+- Variáveis de ambiente configuradas
 
-### Pré-requisitos
+## 🔧 Instalação
 
-* Node.js (versão 14 ou superior)
-* npm (versão 6 ou superior)
-* PostgreSQL (versão 13 ou superior)
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/MaiaAndrey31/Burguer-API.git
+   cd Burguer-API
+   ```
 
-### Instalação
+2. Instale as dependências:
+   ```bash
+   yarn
+   # ou
+   npm install
+   ```
 
-1. Clone o repositório: 
-2. Instale as dependências: `yarn`
-3. Crie um banco de dados PostgreSQL e atualize o arquivo `config/database.js` com suas credenciais de banco de dados.
-4. Execute as migrações: `yarn sequelize db:migrate`
+3. Configure as variáveis de ambiente:
+   - Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`
+   - Preencha com suas credenciais do banco de dados e chaves do Stripe
 
-### Uso
+4. Execute as migrações:
+   ```bash
+   yarn sequelize db:migrate
+   ```
 
-1. Inicie o servidor: `yarn dev`
-2. Use uma ferramenta como Postman ou cURL para enviar requisições para a API.
-3. Os arquivos enviados para produtos e categorias são servidos estaticamente nos caminhos:
-   - `/product-file`
-   - `/category-file`
+5. Inicie o servidor em modo desenvolvimento:
+   ```bash
+   yarn dev
+   ```
 
-## Autenticação
+   O servidor estará disponível em `http://localhost:3001`
 
-A maioria dos endpoints da API requer autenticação. Para autenticar, envie uma requisição POST para `/session` com as credenciais do usuário para obter um token de autenticação. Inclua esse token no cabeçalho `Authorization` das requisições subsequentes para acessar os recursos protegidos.
+## 🔒 Autenticação
 
-## Pontos de Extremidade da API
+A API usa JWT (JSON Web Tokens) para autenticação. A maioria dos endpoints requer autenticação.
 
-* **Usuários**
-  + POST `/users`: Crie um novo usuário
+1. Faça login em `/session` para obter seu token
+2. Inclua o token no cabeçalho das requisições:
+   ```
+   Authorization: Bearer seu-token-aqui
+   ```
 
-* **Sessão**
-  + POST `/session`: Autentique um usuário e obtenha um token
+## 📚 Endpoints da API
 
-* **Produtos**
-  + POST `/products`: Crie um novo produto (com upload de arquivo)
-  + GET `/products`: Obtenha todos os produtos
-  + PUT `/products/:id`: Atualize um produto (com upload de arquivo)
+### 👥 Usuários
+- `POST /users` - Cria um novo usuário
 
-* **Categorias**
-  + POST `/categories`: Crie uma nova categoria (com upload de arquivo)
-  + GET `/categories`: Obtenha todas as categorias
-  + PUT `/categories/:id`: Atualize uma categoria (com upload de arquivo)
+### 🔑 Autenticação
+- `POST /session` - Autentica um usuário e retorna um token JWT
 
-* **Pedidos**
-  + POST `/orders`: Crie um novo pedido
-  + GET `/orders`: Obtenha todos os pedidos
-  + PUT `/orders/:id`: Atualize um pedido
+### 🍔 Produtos
+- `GET /products` - Lista todos os produtos
+- `POST /products` - Cria um novo produto (com upload de imagem)
+- `PUT /products/:id` - Atualiza um produto existente
 
-## Modelos
+### 📂 Categorias
+- `GET /categories` - Lista todas as categorias
+- `POST /categories` - Cria uma nova categoria (com upload de imagem)
+- `PUT /categories/:id` - Atualiza uma categoria existente
 
-* **Usuário**: Representa um usuário no banco de dados.
-* **Produto**: Representa um produto no banco de dados.
-* **Categoria**: Representa uma categoria de produtos.
-* **Pedido**: Representa um pedido realizado por um usuário.
+### 🛒 Pedidos
+- `GET /orders` - Lista todos os pedidos
+- `POST /orders` - Cria um novo pedido
+- `PUT /orders/:id` - Atualiza o status de um pedido
 
-## Banco de Dados
+### 💳 Pagamentos
+- `POST /create-payment-intent` - Cria uma intenção de pagamento no Stripe
 
-O banco de dados é gerenciado usando Sequelize, um ORM popular para Node.js. O esquema do banco de dados é definido no diretório `models`.
+## 📁 Estrutura do Projeto
 
-## Contribuindo
+```
+src/
+├── app/
+│   ├── controllers/    # Controladores da aplicação
+│   ├── middlewares/    # Middlewares personalizados
+│   └── models/         # Modelos do Sequelize
+├── config/             # Configurações
+├── database/
+│   ├── migrations/    # Migrações do banco de dados
+│   └── seeders/        # Seeders para dados iniciais
+├── routes.js           # Definição das rotas
+└── server.js           # Ponto de entrada da aplicação
+```
 
-Contribuições são bem-vindas! Por favor, envie um pull request com suas alterações.
+## 🔄 Upload de Arquivos
 
-## Licença
+A API suporta upload de imagens para produtos e categorias. As imagens são salvas na pasta `uploads/` e servidas estaticamente nos seguintes caminhos:
 
-Este projeto está licenciado sob a licença MIT.
+- `/product-file/nome-do-arquivo` - Para imagens de produtos
+- `/category-file/nome-do-arquivo` - Para imagens de categorias
+
+## 💳 Pagamentos com Stripe
+
+A integração com Stripe permite processar pagamentos de forma segura. Para usar:
+
+1. Crie uma conta no [Stripe](https://stripe.com/)
+2. Obtenha suas chaves de API (pública e secreta)
+3. Configure as variáveis de ambiente no `.env`
+
+## 🛠️ Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+```
+NODE_ENV=development
+APP_SECRET=sua_chave_secreta_aqui
+
+# Banco de Dados
+DB_HOST=localhost
+DB_USER=seu_usuario
+DB_PASS=sua_senha
+DB_NAME=nome_do_banco
+
+# Stripe
+STRIPE_API_KEY=sua_chave_do_stripe
+STRIPE_WEBHOOK_SECRET=seu_webhook_secret
+
+# Upload
+STORAGE_TYPE=local
+
+# URL da aplicação (sem a barra final)
+APP_URL=http://localhost:3001
+```
+
+## 🧪 Testes
+
+Para executar os testes:
+
+```bash
+yarn test
+```
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Siga estes passos:
+
+1. Faça um Fork do projeto
+2. Crie uma Branch para sua Feature (`git checkout -b feature/AmazingFeature`)
+3. Adicione suas mudanças (`git add .`)
+4. Comite suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+5. Faça o Push da Branch (`git push origin feature/AmazingFeature`)
+6. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👨‍💻 Autor
+
+Feito por Andrey Maia 👋🏽 Entre em contato!
+
+[![Linkedin Badge](https://img.shields.io/badge/-Andrey_Maia-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/maiaandrey)](https://www.linkedin.com/in/maiaandrey) 
+[![Gmail Badge](https://img.shields.io/badge/-maiaandrey31dev@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:maiaandrey31dev@gmail.com)](mailto:maiaandrey31dev@gmail.com)
